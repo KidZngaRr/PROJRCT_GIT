@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/echarts.common.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+<div id="main" style="width:700px;height:500px"></div>
+
+<script type="text/javascript">
+	var mychart=echarts.init(document.getElementById("main"));
+	var option={
+			   title:{
+			     text:'AJAX异步调用显示柱状图'
+			     
+			   },
+			   tooltip:{},
+			   legend:{
+			     data:['成绩']
+			   },
+			   xAxis:{
+			     data:[]
+			   },
+			   yAxis:{
+			   
+			   },
+			   series:[{
+			      name:'成绩',
+			      type:'bar',
+			      data:[]
+			   }]
+
+			};
+
+			//加载图表配置项
+			mychart.setOption(option);
+			//加载数据，先提示用户,显示数据加载框
+			mychart.showLoading();
+			//正式加载数据
+			var names=[];
+			var scores=[];
+			$.ajax({
+			   type:"post",
+			   url:"getallstu",
+			   data:{},
+			   dataType:"json",
+			   success:function(result){
+			      if(result){
+			        //遍历json数组
+			        for(var i=0;i<result.length;i++){
+			          // alert(result[i].name);
+			          // alert(result[i].score);
+			          names.push(result[i].name);
+			          scores.push(result[i].score);
+			        }
+			        //停止显示数据加载条
+			        mychart.hideLoading();
+			        //把数据设置到echarts图表
+			        mychart.setOption({
+			           
+			        xAxis:{
+			          data:names
+			         },
+			       series:[{
+			       
+			         name:'成绩',
+			         type:'bar',
+			         data:scores
+			       }]  
+			        })
+			      }
+			   }
+			})
+</script>
+</body>
+</html>
