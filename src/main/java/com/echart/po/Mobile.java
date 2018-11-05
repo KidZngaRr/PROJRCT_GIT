@@ -1,5 +1,9 @@
 package com.echart.po;
-
+/**
+ * mobile
+ * @author ibm
+ *
+ */
 public class Mobile {
 
 	private int id;
